@@ -1,4 +1,4 @@
-# unevaluated_display.py  ── put this on PYTHONPATH or %run it in a notebook
+# unevaluated_display.py  -- put this on PYTHONPATH or %run it in a notebook
 from sympy import Pow, S
 from sympy.printing.latex import latex
 from IPython.display import display, Math
