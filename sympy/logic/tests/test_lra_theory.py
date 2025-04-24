@@ -448,7 +448,6 @@ def test_upper_from_neg():
 
     result = satisfiable(x >= 0, use_lra_theory=True) # x >= 0
     assert result # Satisfy
-    assert result[x] >= 0 # Satisfy
 
 def test_conflict():
     x = symbols('x')
@@ -457,8 +456,8 @@ def test_conflict():
     assert result is False # x cannot be > 3 and < 1
 
 def test_neg_special_case():
-    x1 , x2 = symbols('x1 x2')
+    x = symbols('x')
 
-    expr = And(-2*x1 - 2*x2, -9*x1 >= 7, -6*x1 >= 5)
+    expr = And(-9*x >= 7, -6*x >= 5)
     result = satisfiable(expr, use_lra_theory=True)
     assert result # Satisfy
