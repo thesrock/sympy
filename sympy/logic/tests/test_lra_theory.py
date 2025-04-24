@@ -5,7 +5,8 @@ from sympy.core.singleton import S
 from sympy.matrices.dense import Matrix
 from sympy.matrices.dense import randMatrix
 from sympy.assumptions.ask import Q
-from sympy.logic.boolalg import And
+from sympy.logic import satisfiable
+from sympy.logic.boolalg import And, Or
 from sympy.abc import x, y, z
 from sympy.assumptions.cnf import CNF, EncodedCNF
 from sympy.functions.elementary.trigonometric import cos
@@ -438,3 +439,26 @@ def test_empty_cnf():
     lra, conflict = LRASolver.from_encoded_cnf(enc)
     assert len(conflict) == 0
     assert lra.check() == (True, {})
+
+def test_upper_from_neg():
+    x = symbols('x')
+
+    result_neg = satisfiable(-x >= 1, use_lra_theory=True) # (x <= -1)
+    assert result_neg # Satisfy
+
+    result = satisfiable(x >= 0, use_lra_theory=True) # x >= 0
+    assert result # Satisfy
+    assert result[x] >= 0 # Satisfy
+
+def test_conflict():
+    x = symbols('x')
+
+    result = satisfiable(And(x > 3, x < 1), use_lra_theory=True)
+    assert result is False # x cannot be > 3 and < 1
+
+def test_neg_special_case():
+    x1 , x2 = symbols('x1 x2')
+
+    expr = And(-2*x1 - 2*x2, -9x1 >= 7, -6*x1 >= 5)
+    result = satisfiable(expr, use_lra_theory=True)
+    assert result # Satisfy
