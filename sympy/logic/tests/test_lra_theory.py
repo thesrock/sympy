@@ -459,6 +459,6 @@ def test_conflict():
 def test_neg_special_case():
     x1 , x2 = symbols('x1 x2')
 
-    expr = And(-2*x1 - 2*x2, -9x1 >= 7, -6*x1 >= 5)
+    expr = And(-2*x1 - 2*x2, -9*x1 >= 7, -6*x1 >= 5)
     result = satisfiable(expr, use_lra_theory=True)
     assert result # Satisfy
